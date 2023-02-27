@@ -1,6 +1,7 @@
 package com.example.projetcleancodegroupe5.database;
 
 import com.example.projetcleancodegroupe5.functional.model.Hero;
+import com.example.projetcleancodegroupe5.functional.model.HeroFactory;
 import com.example.projetcleancodegroupe5.functional.model.Player;
 
 import java.sql.*;
@@ -15,11 +16,6 @@ public class MySQLDatabase implements Database{
     private Connection conn;
 
     public MySQLDatabase() {
-        connection();
-    }
-
-    @Override
-    public void connection(){
         try {
             Class.forName(JDBC_DRIVER);
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
@@ -58,7 +54,7 @@ public class MySQLDatabase implements Database{
             if (rowsInserted > 0) {
                 ResultSet rs = statement.getGeneratedKeys();
                 if (rs.next()) {
-                    hero.setId(rs.getString(1));
+                    hero.setId(rs.getFloat(1));
                 }
             }
         } catch (SQLException e) {
@@ -181,7 +177,7 @@ public class MySQLDatabase implements Database{
             statement.setFloat(1, id);
             ResultSet result = statement.executeQuery();
             if (result.next()) {
-                Hero hero = new Hero(result.getFloat("id"), result.getString("name"), result.getFloat("life_point"), result.getString("speciality"), result.getFloat("experience_point"), result.getFloat("power"), result.getFloat("armor"), result.getString("rarity"), result.getFloat("level"));
+                Hero hero = HeroFactory.createHero(result.getFloat("id"), result.getString("name"), result.getFloat("life_point"), result.getString("speciality"), result.getFloat("experience_point"), result.getFloat("power"), result.getFloat("armor"), result.getString("rarity"), result.getFloat("level"));
                 return hero;
             }
         } catch (SQLException e) {
@@ -215,7 +211,7 @@ public class MySQLDatabase implements Database{
             statement.setString(1, name);
             ResultSet result = statement.executeQuery();
             if (result.next()) {
-                Hero hero = new Hero(result.getFloat("id"), result.getString("name"), result.getFloat("life_point"), result.getString("speciality"), result.getFloat("experience_point"), result.getFloat("power"), result.getFloat("armor"), result.getString("rarity"), result.getFloat("level"));
+                Hero hero = HeroFactory.createHero(result.getFloat("id"), result.getString("name"), result.getFloat("life_point"), result.getString("speciality"), result.getFloat("experience_point"), result.getFloat("power"), result.getFloat("armor"), result.getString("rarity"), result.getFloat("level"));
                 return hero;
             }
         } catch (SQLException e) {

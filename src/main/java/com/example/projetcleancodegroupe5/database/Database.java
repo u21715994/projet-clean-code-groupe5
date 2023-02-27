@@ -5,8 +5,7 @@ import com.example.projetcleancodegroupe5.functional.model.Player;
 
 import java.util.List;
 
-interface Database {
-    void connection();
+public interface Database {
     void close();
 
     void addHero(Hero hero);
