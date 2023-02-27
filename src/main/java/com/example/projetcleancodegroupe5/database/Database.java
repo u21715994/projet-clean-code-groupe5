@@ -3,6 +3,8 @@ package com.example.projetcleancodegroupe5.database;
 import com.example.projetcleancodegroupe5.functional.model.Hero;
 import com.example.projetcleancodegroupe5.functional.model.Player;
 
+import java.util.List;
+
 interface Database {
     void connection();
     void close();
@@ -14,4 +16,8 @@ interface Database {
     void addPlayer(Player player);
 
     void updatePlayer(String id, Player player);
+
+    void addDeck(Player player, List<Hero> heroList);
+
+    void updateDeck(Player player, List<Hero> heroList);
 }

@@ -125,7 +125,7 @@ public class HeroWizard implements Hero {
     }
 
     @Override
-    public String getID() {
+    public float getID() {
         return id;
     }
 

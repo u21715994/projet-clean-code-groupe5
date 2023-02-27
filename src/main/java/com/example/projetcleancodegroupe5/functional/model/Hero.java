@@ -9,7 +9,7 @@ public interface Hero {
     int getArmor();
     int getLevel();
     int getPower();
-    String getID();
+    float getID();
     void setId(String id);
     Hero setLifePoint(int lifePoint);
 

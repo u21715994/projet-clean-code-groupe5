@@ -4,6 +4,7 @@ import com.example.projetcleancodegroupe5.functional.model.Hero;
 import com.example.projetcleancodegroupe5.functional.model.Player;
 
 import java.sql.*;
+import java.util.List;
 
 public class MySQLDatabase implements Database{
     private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
@@ -41,7 +42,7 @@ public class MySQLDatabase implements Database{
 
     @Override
     public void addHero(Hero hero) {
-        String sql = "INSERT INTO hero (name, life_point, speciality, experience_point, power, armor, rarity, level) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO hero (name, life_point, speciality, experience_point, power, armor, rarity, level) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, hero.getName());
@@ -91,8 +92,8 @@ public class MySQLDatabase implements Database{
         try {
             PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, player.getName());
-            statement.setFloat(2, player.getToken());
-            statement.setFloat(3, player.getNumberBattleWin());
+            statement.setLong(2, player.getToken());
+            statement.setLong(3, player.getNumberBattleWin());
             int rowsInserted = statement.executeUpdate();
 
             if (rowsInserted > 0) {
@@ -112,12 +113,46 @@ public class MySQLDatabase implements Database{
         try {
             PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, player.getName());
-            statement.setFloat(2, player.getToken());
-            statement.setFloat(3, player.getNumberBattleWin());
+            statement.setLong(2, player.getToken());
+            statement.setLong(3, player.getNumberBattleWin());
             statement.setString(4, id);
             statement.executeUpdate();
         } catch (SQLException e) {
             System.err.println("Erreur lors de la mise à jour du joueur dans la base de données : " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void addDeck(Player player, List<Hero> heroList) {
+        String sql = "INSERT INTO deck (player_id, hero_id) VALUES (?, ?)";
+        try {
+            PreparedStatement statement = conn.prepareStatement(sql);
+            for (Hero hero : heroList) {
+                statement.setString(1, player.getID());
+                statement.setFloat(2, hero.getID());
+                statement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            System.err.println("Erreur lors de l'ajout du deck à la base de données : " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void updateDeck(Player player, List<Hero> heroList) {
+        String deleteSql = "DELETE FROM deck WHERE player_id = ?";
+        String insertSql = "INSERT INTO deck (player_id, hero_id) VALUES (?, ?)";
+        try {
+            PreparedStatement deleteStatement = conn.prepareStatement(deleteSql);
+            deleteStatement.setString(1, player.getID());
+            deleteStatement.executeUpdate();
+            PreparedStatement insertStatement = conn.prepareStatement(insertSql);
+            for (Hero hero : heroList) {
+                insertStatement.setString(1, player.getID());
+                insertStatement.setFloat(2, hero.getID());
+                insertStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            System.err.println("Erreur lors de la mise à jour du deck dans la base de données : " + e.getMessage());
         }
     }
 
