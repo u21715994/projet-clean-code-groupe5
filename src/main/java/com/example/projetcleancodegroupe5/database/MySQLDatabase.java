@@ -156,4 +156,38 @@ public class MySQLDatabase implements Database{
         }
     }
 
+    @Override
+    public Player findPlayerById(String id) {
+        String sql = "SELECT * FROM player WHERE id = ?";
+        try {
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, id);
+            ResultSet result = statement.executeQuery();
+            if (result.next()) {
+                Player player = new Player(result.getString("id"), result.getString("name"), result.getLong("token"), result.getLong("numberBattleWin"));
+                return player;
+            }
+        } catch (SQLException e) {
+            System.err.println("Erreur lors de la recherche du joueur dans la base de données : " + e.getMessage());
+        }
+        return null;
+    }
+
+    @Override
+    public Hero findHeroById(float id) {
+        String sql = "SELECT * FROM hero WHERE id = ?";
+        try {
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setFloat(1, id);
+            ResultSet result = statement.executeQuery();
+            if (result.next()) {
+                Hero hero = new Hero(result.getFloat("id"), result.getString("name"), result.getFloat("life_point"), result.getString("speciality"), result.getFloat("experience_point"), result.getFloat("power"), result.getFloat("armor"), result.getString("rarity"), result.getFloat("level"));
+                return hero;
+            }
+        } catch (SQLException e) {
+            System.err.println("Erreur lors de la recherche du hero dans la base de données : " + e.getMessage());
+        }
+        return null;
+    }
+
 }

@@ -20,4 +20,8 @@ interface Database {
     void addDeck(Player player, List<Hero> heroList);
 
     void updateDeck(Player player, List<Hero> heroList);
+
+    Player findPlayerById(String id);
+
+    Hero findHeroById(float id);
 }

@@ -40,7 +40,7 @@ public class HeroAssassin implements Hero {
 
     @Override
     public float getID() {
-        return id;
+        return Float.parseFloat(id);
     }
 
     @Override

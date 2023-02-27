@@ -10,7 +10,7 @@ public class Player {
     long token;
     long numberBattleWin;
 
-    public Player(String name){
+    public Player(String name, String string, long token, long numberBattleWin){
         this.name = name;
         this.ID = "1";
         this.token = 4;
