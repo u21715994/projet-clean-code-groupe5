@@ -24,4 +24,8 @@ interface Database {
     Player findPlayerById(String id);
 
     Hero findHeroById(float id);
+
+    Player findPlayerByName(String name);
+
+    Hero findHeroByName(String name);
 }
