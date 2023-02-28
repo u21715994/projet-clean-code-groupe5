@@ -2,6 +2,7 @@ package com.example.projetcleancodegroupe5.adapter;
 
 import com.example.projetcleancodegroupe5.database.Database;
 import com.example.projetcleancodegroupe5.database.MySQLDatabase;
+import com.example.projetcleancodegroupe5.functional.model.Deck;
 import com.example.projetcleancodegroupe5.functional.model.Hero;
 import com.example.projetcleancodegroupe5.functional.model.Player;
 import com.example.projetcleancodegroupe5.port.PlayerDAO;
@@ -27,5 +28,16 @@ public class PlayerDAOImplementation implements PlayerDAO {
     public Player findPlayer(String id){
         Player player = database.findPlayerById(id);
         return player;
+    }
+
+    @Override
+    public void addDeck(Player player) {
+        database.addDeck(player, player.getDeck().getCards());
+    }
+
+    @Override
+    public void addHero(Player player) {
+        for(Hero hero: player.getDeck().getCards())
+            database.addHero(hero);
     }
 }
