@@ -1,11 +1,14 @@
 package com.example.projetcleancodegroupe5.database;
 
+import com.example.projetcleancodegroupe5.functional.model.Deck;
 import com.example.projetcleancodegroupe5.functional.model.Hero;
 import com.example.projetcleancodegroupe5.functional.model.HeroFactory;
 import com.example.projetcleancodegroupe5.functional.model.Player;
 
 import java.sql.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MySQLDatabase implements Database{
     private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
@@ -153,6 +156,27 @@ public class MySQLDatabase implements Database{
     }
 
     @Override
+    public Deck getDeck(Player player){
+        String sql = "SELECT * FROM deck WHERE player_id = ?";
+        Deck deck = new Deck();
+        try {
+            PreparedStatement getStatement = conn.prepareStatement(sql);
+            getStatement.setString(1, player.getID());
+            ResultSet result = getStatement.executeQuery();
+            Map<Float, Float> map = new HashMap<>();
+            while (result.next()) {
+                map.put(result.getFloat("hero_id"), result.getFloat("player_id"));
+            }
+            for(Float key: map.keySet()){
+                deck.getCards().add(findHeroById(key));
+            }
+        } catch (SQLException e) {
+            System.err.println("Erreur lors de la recherche d un deck dans la base de données : " + e.getMessage());
+        }
+        return deck;
+    }
+
+    @Override
     public Player findPlayerById(String id) {
         String sql = "SELECT * FROM player WHERE id = ?";
         try {
@@ -161,6 +185,7 @@ public class MySQLDatabase implements Database{
             ResultSet result = statement.executeQuery();
             if (result.next()) {
                 Player player = new Player(result.getString("id"), result.getString("name"), result.getLong("token"), result.getLong("numberBattleWin"));
+                player.setDeck(getDeck(player));
                 return player;
             }
         } catch (SQLException e) {
@@ -177,6 +202,7 @@ public class MySQLDatabase implements Database{
             statement.setFloat(1, id);
             ResultSet result = statement.executeQuery();
             if (result.next()) {
+                System.out.println(result.getString("speciality"));
                 Hero hero = HeroFactory.createHero(result.getFloat("id"), result.getString("name"), result.getFloat("life_point"), result.getString("speciality"), result.getFloat("experience_point"), result.getFloat("power"), result.getFloat("armor"), result.getString("rarity"), result.getFloat("level"));
                 return hero;
             }

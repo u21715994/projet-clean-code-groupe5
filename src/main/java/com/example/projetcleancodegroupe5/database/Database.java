@@ -1,5 +1,6 @@
 package com.example.projetcleancodegroupe5.database;
 
+import com.example.projetcleancodegroupe5.functional.model.Deck;
 import com.example.projetcleancodegroupe5.functional.model.Hero;
 import com.example.projetcleancodegroupe5.functional.model.Player;
 
@@ -23,6 +24,7 @@ public interface Database {
     Player findPlayerById(String id);
 
     Hero findHeroById(float id);
+    Deck getDeck(Player player);
 
     Player findPlayerByName(String name);
 

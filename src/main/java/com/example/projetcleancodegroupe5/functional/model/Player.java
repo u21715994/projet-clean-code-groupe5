@@ -21,12 +21,12 @@ public class Player {
         this.deck = new Deck();
     }
 
-    public Player(String name, String string, long token, long numberBattleWin){
+    public Player(String id, String name, long token, long numberBattleWin){
         this.name = name;
-        this.ID = "1";
-        this.token = 4;
+        this.ID = id;
+        this.token = token;
         this.deck = new Deck();
-        this.numberBattleWin = 0;
+        this.numberBattleWin = numberBattleWin;
     }
 
     public Player(Player player, int tokenRequired,List<Hero> heroes){
@@ -88,5 +88,9 @@ public class Player {
 
     public void setId(String id) {
         this.ID = id;
+    }
+
+    public void setDeck(Deck deck) {
+        this.deck = deck;
     }
 }
